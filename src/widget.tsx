@@ -74,8 +74,7 @@ export class LuxWidgetView extends DOMWidgetView {
       _selectedVisIdxs:object,
       deletedIndices:object,
       currentVisSelected:number,
-      openWarning: boolean,
-      userCode:string
+      openWarning: boolean
     }
 
     class ReactWidget extends React.Component<LuxWidgetView,WidgetProps> {
@@ -101,8 +100,7 @@ export class LuxWidgetView extends DOMWidgetView {
           _selectedVisIdxs:{},
           deletedIndices: {},
           currentVisSelected: -2,
-          openWarning:false,
-          userCode:"initial user code"
+          openWarning:false
         }
 
         // This binding is necessary to make `this` work in the callback
@@ -115,8 +113,6 @@ export class LuxWidgetView extends DOMWidgetView {
         this.deleteSelection = this.deleteSelection.bind(this);
         this.setIntent = this.setIntent.bind(this);
         this.closeExportInfo = this.closeExportInfo.bind(this);
-
-        this.handleCodeChange = this.handleCodeChange.bind(this);
 
       }
 
@@ -265,15 +261,6 @@ export class LuxWidgetView extends DOMWidgetView {
         }
       }
 
-      /*
-       * For testing inputs with text
-       */
-      handleCodeChange(e) {
-        // console.log("Text input box changed to: ", e)
-        this.setState({
-          userCode: e.target.value
-        });
-      }
 
       generateTabItems() {
         return (
@@ -298,7 +285,6 @@ export class LuxWidgetView extends DOMWidgetView {
       }
 
       render() {
-        console.log("In render of LuxWidgetView.")
 
         var buttonsEnabled = Object.keys(this.state._selectedVisIdxs).length > 0;
         var intentEnabled = Object.keys(this.state._selectedVisIdxs).length == 1 && Object.values(this.state._selectedVisIdxs)[0].length == 1;
@@ -319,11 +305,7 @@ export class LuxWidgetView extends DOMWidgetView {
                                      tabItems={this.state.tabItems}
                                      showAlert={this.state.showAlert}
                                      intentEnabled={intentEnabled}
-                                     /> 
-                <div> Code:<br />
-                      <textarea value={this.state.userCode} onChange={this.handleCodeChange}  />
-                      <div>{this.state.userCode} </div>
-                </div>              
+                                     />             
                 </div>);
         } else {
           
@@ -353,20 +335,14 @@ export class LuxWidgetView extends DOMWidgetView {
                                      />
                     <WarningBtn message={this.state.message} openPanel={this.openPanel} closePanel={this.closePanel} openWarning={this.state.openWarning} />
                     
-                    <div> Code:<br />
-                      <textarea value={this.state.userCode} onChange={this.handleCodeChange}  />
-                      <div>{this.state.userCode} </div>
-                    </div>
                   </div>);
         }
       }
     }
-    console.log("In initialize of LuxWidgetView Wrapper.")
     const $app = document.createElement("div");
     const App = React.createElement(ReactWidget,view);
     ReactDOM.render(App,$app); // Renders the app
     view.el.append($app); //attaches the rendered app to the DOM (both are required for the widget to show)
-    console.log("initialize complete!")
     dispatchLogEvent("initWidget","")
   }
 }
