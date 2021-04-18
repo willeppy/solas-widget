@@ -20,7 +20,7 @@ import {
   MODULE_NAME, MODULE_VERSION
 } from './version';
 
-import '../css/widget.css'
+import '../style/base.css'
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -32,6 +32,7 @@ import CurrentVisComponent from './currentVis';
 import {dispatchLogEvent} from './utils';
 import ButtonsBroker from './buttonsBroker';
 import WarningBtn from './warningBtn';
+import InfoBtn from './infoBtn';
 
 export class LuxModel extends DOMWidgetModel {
   defaults() {
@@ -57,24 +58,25 @@ export class LuxModel extends DOMWidgetModel {
   static view_module = MODULE_NAME;   // Set to null if no view
   static view_module_version = MODULE_VERSION;
 }
-
 export class LuxWidgetView extends DOMWidgetView {
   initialize(){    
     let view = this;
     interface WidgetProps{
-      currentVis:object,
-      recommendations:any[],
-      intent:string,
+      currentVis: object,
+      recommendations: any[],
+      intent: string,
       selectedIntentIndex: object,
-      message:string,
+      message: string,
+      longDescription: string,
       tabItems: any,
-      activeTab:any,
-      showAlert:boolean,
-      selectedRec:object,
-      _selectedVisIdxs:object,
-      deletedIndices:object,
-      currentVisSelected:number,
-      openWarning: boolean
+      activeTab: any,
+      showAlert: boolean,
+      selectedRec: object,
+      _selectedVisIdxs: object,
+      deletedIndices: object,
+      currentVisSelected: number,
+      openWarning: boolean,
+      openInfo: boolean
     }
 
     class ReactWidget extends React.Component<LuxWidgetView,WidgetProps> {
@@ -88,19 +90,21 @@ export class LuxWidgetView extends DOMWidgetView {
         }
 
         this.state = {
-          currentVis :  props.model.get("current_vis"),
-          recommendations:  props.model.get("recommendations"),
-          intent:props.model.get("intent"),
+          currentVis: props.model.get("current_vis"),
+          recommendations: props.model.get("recommendations"),
+          intent: props.model.get("intent"),
           selectedIntentIndex: {},
-          message:props.model.get("message"),
+          message: props.model.get("message"),
+          longDescription: this.generateDescription(null),
           tabItems: this.generateTabItems(),
           activeTab: props.activeTab,
-          showAlert:false,
-          selectedRec:{},
-          _selectedVisIdxs:{},
+          showAlert: false,
+          selectedRec: {},
+          _selectedVisIdxs: {},
           deletedIndices: {},
           currentVisSelected: -2,
-          openWarning:false
+          openWarning: false,
+          openInfo: false
         }
 
         // This binding is necessary to make `this` work in the callback
@@ -108,28 +112,39 @@ export class LuxWidgetView extends DOMWidgetView {
         this.handleCurrentVisSelect = this.handleCurrentVisSelect.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
         this.exportSelection = this.exportSelection.bind(this);
-        this.openPanel = this.openPanel.bind(this);
-        this.closePanel = this.closePanel.bind(this);
+        this.toggleWarningPanel = this.toggleWarningPanel.bind(this);
         this.deleteSelection = this.deleteSelection.bind(this);
         this.setIntent = this.setIntent.bind(this);
         this.closeExportInfo = this.closeExportInfo.bind(this);
-
+        this.toggleInfoPanel = this.toggleInfoPanel.bind(this);
       }
 
-      openPanel(e){
-        dispatchLogEvent("openWarning",this.state.message);
+      toggleWarningPanel(e){
+        if (this.state.openWarning){
+          dispatchLogEvent("closeWarning",this.state.message);
+          this.setState({openWarning:false});
+        } else {
+          dispatchLogEvent("openWarning",this.state.message);
         this.setState({openWarning:true});
+        }
       }
-      closePanel(e){
-        dispatchLogEvent("closeWarning",this.state.message);
-        this.setState({openWarning:false});
+
+      // called to toggle the long description panel
+      toggleInfoPanel(e){
+        if (this.state.openInfo) {
+          dispatchLogEvent("closeInfo",this.state.longDescription);
+          this.setState({openInfo:false});
+        } else {
+          dispatchLogEvent("openInfo",this.state.longDescription);
+          this.setState({openInfo:true});
+        }
       }
 
       // called to close alert pop up upon export button hit by user
       closeExportInfo() {
         dispatchLogEvent("closeExportInfo", null);
         this.setState({
-          showAlert: false});
+          showAlert:false});
       }
   
       // called when the variable is changed in the view.model
@@ -138,15 +153,35 @@ export class LuxWidgetView extends DOMWidgetView {
         this.setState(model.changed);
       }
 
-      //triggered when component is mounted (i.e., when widget first rendered)
+      // triggered when component is mounted (i.e., when widget first rendered)
       componentDidMount(){ 
         view.listenTo(view.model,"change",this.onChange.bind(this));
       }
 
-      //triggered after component is updated
+      // triggered after component is updated
       // instead of touch (which leads to callback issues), we have to use save_changes
       componentDidUpdate(){ 
         view.model.save_changes();
+      }
+
+      // populates the long description
+      generateDescription(selectedTab) {
+        // selectedTab starts out as null and is populated on switches of tabs
+        if (!selectedTab) {
+          // takes care of init, sets to first longDescription in recommendations list
+          if (this.props.model.get("recommendations").length > 0) {
+            selectedTab = this.props.model.get("recommendations")[0].action;
+          } else {
+            return "";
+          }
+        }
+        var description = "";
+        for (var recommendation of this.props.model.get("recommendations")) {
+          if (recommendation.action === selectedTab) {
+            description = recommendation.long_description
+          }
+        }
+        return description;
       }
   
       handleSelect(selectedTab) {
@@ -155,8 +190,10 @@ export class LuxWidgetView extends DOMWidgetView {
         if (selectedTab){
           dispatchLogEvent("switchTab",selectedTab)
         }
+        var description = this.generateDescription(selectedTab);
         this.setState({
-          activeTab: selectedTab
+          activeTab: selectedTab,
+          longDescription: description
         });
       }
 
@@ -267,7 +304,7 @@ export class LuxWidgetView extends DOMWidgetView {
           this.props.model.get("recommendations").map((actionResult,tabIdx) =>
             <Tab eventKey={actionResult.action} title={actionResult.action} >
               <ChartGalleryComponent 
-                  // this exists to prevent chart gallergy from refreshing while changing tabs
+                  // this exists to prevent chart gallery from refreshing while changing tabs
                   // This is an anti-pattern for React, but is necessary here because our chartgallery is very expensive to initialize
                   key={'no refresh'}
                   ref={this.chartComponents[tabIdx]}
@@ -284,20 +321,27 @@ export class LuxWidgetView extends DOMWidgetView {
         )
       }
 
+      generateNoRecsWarning() {
+        if (this.state.message!= "") {
+          return <div id="no-recs-footer" style={{display:"flex"}}>
+            <div id="no-recs" className = "fa fa-exclamation-triangle"></div>
+            <div><p className="warnMsgText"  dangerouslySetInnerHTML={{__html: this.state.message.replace(/<[^>]+>/g, '')}}></p></div> 
+          </div>
+        }
+      }
+
+
       render() {
 
         var buttonsEnabled = Object.keys(this.state._selectedVisIdxs).length > 0;
         var intentEnabled = Object.keys(this.state._selectedVisIdxs).length == 1 && Object.values(this.state._selectedVisIdxs)[0].length == 1;
-        
         if (this.state.recommendations.length == 0) {
           return (<div id="oneViewWidgetContainer" style={{ flexDirection: 'column' }}>
-                  {/* {attributeShelf}
-                  {filterShelf} */}
-                  <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <CurrentVisComponent intent={this.state.intent} currentVisSpec={this.state.currentVis} numRecommendations={0}
-                    onChange={this.handleCurrentVisSelect}/>
-                  </div>
-                  <ButtonsBroker buttonsEnabled={buttonsEnabled}
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                      <CurrentVisComponent intent={this.state.intent} currentVisSpec={this.state.currentVis} numRecommendations={this.state.recommendations.length}
+                      onChange={this.handleCurrentVisSelect}/>
+                    </div>
+                    <ButtonsBroker buttonsEnabled={buttonsEnabled}
                                      deleteSelection={this.deleteSelection}
                                      exportSelection={this.exportSelection}
                                      setIntent={this.setIntent}
@@ -305,12 +349,10 @@ export class LuxWidgetView extends DOMWidgetView {
                                      tabItems={this.state.tabItems}
                                      showAlert={this.state.showAlert}
                                      intentEnabled={intentEnabled}
-                                     />             
-                </div>);
-        } else {
-          
-
-
+                                     />
+                  {this.generateNoRecsWarning()}
+                  </div>);
+        } else if (this.state.recommendations.length > 0) {
           return (<div id="widgetContainer" style={{ flexDirection: 'column' }}>
                     {/* {attributeShelf}
                     {filterShelf} */}
@@ -333,8 +375,8 @@ export class LuxWidgetView extends DOMWidgetView {
                                      showAlert={this.state.showAlert}
                                      intentEnabled={intentEnabled}
                                      />
-                    <WarningBtn message={this.state.message} openPanel={this.openPanel} closePanel={this.closePanel} openWarning={this.state.openWarning} />
-                    
+                    <InfoBtn message={this.state.longDescription} toggleInfoPanel={this.toggleInfoPanel} openInfo={this.state.openInfo} /> 
+                    <WarningBtn message={this.state.message} toggleWarningPanel={this.toggleWarningPanel} openWarning={this.state.openWarning} />
                   </div>);
         }
       }

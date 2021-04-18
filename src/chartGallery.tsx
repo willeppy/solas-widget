@@ -17,6 +17,7 @@ import SelectableCard from './selectableCard';
 import { VegaLite } from 'react-vega';
 import ScrollableContent from './scrollableContent'
 import {dispatchLogEvent} from './utils';
+
 interface chartGalleryProps{
     title:string,
     multiple: boolean,
@@ -115,7 +116,8 @@ class ChartGalleryComponent extends Component<chartGalleryProps,any> {
                     </SelectableCard>
                   }
               </div>  
-            )} title={this.props.title} currentVisShow={this.props.currentVisShow}></ScrollableContent>
+            )} title={this.props.title} currentVisShow={this.props.currentVisShow}>
+            </ScrollableContent>
           </div>
         );
     }
