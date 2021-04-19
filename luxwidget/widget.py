@@ -24,9 +24,14 @@ class LuxWidget(DOMWidget):
     message = Unicode("").tag(sync=True)
     all_column = Bool(False).tag(sync=True)
 
-    def __init__(self, currentVis=None, recommendations=None, intent=None, message=None, **kwargs):
+    # history tracking 
+    history_list = List([]).tag(sync=True)
+    deletedHistoryItem = Dict({}).tag(sync=True)
+
+    def __init__(self, currentVis=None, recommendations=None, intent=None, message=None, history_list=None, **kwargs):
         super().__init__(**kwargs)
         self.current_vis = currentVis
         self.recommendations = recommendations
         self.intent = intent
         self.message = message
+        self.history_list = history_list

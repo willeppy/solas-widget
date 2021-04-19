@@ -160,6 +160,15 @@
     font-size: 20px;
     padding: 5px;
   }
+
+  #editHistoryBtn{
+    /* color: #ffbc00; */
+    position: absolute;
+    top: 5px;
+    right: 85px;
+    font-size: 20px;
+    padding: 5px;
+  }
   
   #alertBox{
     position: absolute;
@@ -336,6 +345,7 @@
     margin: 20px 10px;
     cursor: pointer;
   }
+  
   .card:hover {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   }
@@ -527,7 +537,7 @@
     color: #ffbc00;
     position: absolute;
     top: 5px;
-    right: 88px;
+    right: 117px;
     font-size: 20px;
     padding: 5px;
   }
@@ -562,5 +572,107 @@
   #gal-img {
     all: revert;
     height: 212px;
+  }
+
+  /* other card styles */
+  .card-header {
+    padding: 10px 15px;
+    margin: 0;
+    background-color: #F7F7F7; 
+    border-bottom: 1px solid #ebebeb;
+    display: flex;
+  }
+
+  .light-text {
+    font-weight: 300;
+  }
+
+  .ephm-text {
+    color: #315B7D;
+    font-weight: 600;
+  }
+
+  /* .deleteButton {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+  }
+
+  .deleteButton:hover {
+    background-color: #8b212c;
+  } */
+
+  .deleteIcon {
+    color: #dc3545;
+  }
+
+  .deleteIcon:hover {
+    color: #8b212c;
+  }
+
+  .btn {
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    border-radius: .25rem;
+  }
+
+  .card-body {
+    padding: .5rem;
+  }
+
+  .history-card {
+    height: 250px;
+    width: 200px;
+    min-width: 200px;
+
+  }
+
+  .history-code {
+    font-family: monospace, serif;
+    color: #1976D1;
+  }
+
+  .card-section-header {
+    font-weight:600;
+    display: inline-block;
+    margin-right: .3rem;
+  }
+
+  .ma2 {
+    margin: .25rem;
+  }
+
+  .history-wrapper {
+    border: .5px solid #bcbdbd;
+    border-top: 0;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    /* white-space: nowrap; */
+  }
+
+  .feedback-button {
+    border: 1px solid #ebebeb;
+    border-radius: 4rem;
+    padding: 1rem;
+    margin: 1rem;
+    font-size: 1.2rem;
+  }
+
+  .feedback-button:hover {
+    background-color: #e6e6e6 ;
+  }
+
+  .fb-good {
+    color: #418739;
+    border-color: #418739;
+  }
+
+  .fb-bad {
+    color: #e8912e;
+    border-color: #e8912e;
   }
   

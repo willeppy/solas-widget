@@ -33,6 +33,9 @@ import {dispatchLogEvent} from './utils';
 import ButtonsBroker from './buttonsBroker';
 import WarningBtn from './warningBtn';
 import InfoBtn from './infoBtn';
+import HistoryEditor from "./historyEditor";
+import HistoryBtn from "./historyBtn";
+
 
 export class LuxModel extends DOMWidgetModel {
   defaults() {
@@ -76,7 +79,10 @@ export class LuxWidgetView extends DOMWidgetView {
       deletedIndices: object,
       currentVisSelected: number,
       openWarning: boolean,
-      openInfo: boolean
+      openInfo: boolean,
+      historyList: any[],
+      deletedHistoryItem: object,
+      showHistoryEditor: boolean
     }
 
     class ReactWidget extends React.Component<LuxWidgetView,WidgetProps> {
@@ -104,7 +110,10 @@ export class LuxWidgetView extends DOMWidgetView {
           deletedIndices: {},
           currentVisSelected: -2,
           openWarning: false,
-          openInfo: false
+          openInfo: false,
+          historyList: props.model.get("history_list"),
+          deletedHistoryItem: {},
+          showHistoryEditor: false
         }
 
         // This binding is necessary to make `this` work in the callback
@@ -330,11 +339,42 @@ export class LuxWidgetView extends DOMWidgetView {
         }
       }
 
+      deleteHistoryItem(idx) {
+        //  TODO return gallery of history here.
+        console.log("Adding to delete history list: ", idx)
+
+        let deleted_item = this.state.historyList.splice(idx, 1)
+        let mrd_item = {"item": deleted_item, "idx": idx};
+
+        //  update local state 
+        this.setState({
+          deletedHistoryItem: mrd_item,
+          historyList: this.state.historyList
+        })
+
+        // update backend state
+        view.model.set('deletedHistoryItem', mrd_item);
+        view.model.save();
+      }
+
+      toggleHistoryEditor() {
+        this.setState({
+          showHistoryEditor: !this.state.showHistoryEditor,
+        })
+      }
+
 
       render() {
 
         var buttonsEnabled = Object.keys(this.state._selectedVisIdxs).length > 0;
         var intentEnabled = Object.keys(this.state._selectedVisIdxs).length == 1 && Object.values(this.state._selectedVisIdxs)[0].length == 1;
+
+        let history_UI;
+        if (this.state.showHistoryEditor) {
+          history_UI = <HistoryEditor onDelete = {this.deleteHistoryItem.bind(this)} history_list={this.state.historyList}/>
+        }
+
+
         if (this.state.recommendations.length == 0) {
           return (<div id="oneViewWidgetContainer" style={{ flexDirection: 'column' }}>
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -366,6 +406,8 @@ export class LuxWidgetView extends DOMWidgetView {
                         </Tabs>
                       </div>
                     </div>
+                    {history_UI}
+
                     <ButtonsBroker buttonsEnabled={buttonsEnabled}
                                      deleteSelection={this.deleteSelection}
                                      exportSelection={this.exportSelection}
@@ -377,6 +419,7 @@ export class LuxWidgetView extends DOMWidgetView {
                                      />
                     <InfoBtn message={this.state.longDescription} toggleInfoPanel={this.toggleInfoPanel} openInfo={this.state.openInfo} /> 
                     <WarningBtn message={this.state.message} toggleWarningPanel={this.toggleWarningPanel} openWarning={this.state.openWarning} />
+                    <HistoryBtn onClick={this.toggleHistoryEditor.bind(this)} />
                   </div>);
         }
       }
