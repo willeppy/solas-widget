@@ -15,14 +15,6 @@ class HistoryEditor extends Component<historyEditorProps, any> {
         // this.state = {items: items}
     }
 
-    // generateHistoryItems() {
-    //     return (
-    //         this.props.history_list.map((history_item_data, idx) => 
-    //         <HistoryItem itemData={history_item_data} itemIdx={idx}/>
-    //         )
-    //     )
-    // }
-
     render() {
         return (
             <div>

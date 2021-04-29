@@ -44,10 +44,6 @@ class HistoryItem extends Component<historyItemProps, any> {
                     <p className="card-section-header">Columns: </p>
                     {this.props.itemData["cols"].join(", ")}
                     <br/>
-                    <div style={{display: "flex", justifyContent: "center"}}>
-                        <i className="fas fa-thumbs-up feedback-button fb-good" title="See MORE recs with this item"/>
-                        <i className="fas fa-thumbs-down feedback-button fb-bad" title="See LESS recs with this item"/>
-                    </div>
                 </div>
             </div>
         )
