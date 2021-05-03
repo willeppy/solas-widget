@@ -27,11 +27,13 @@ class LuxWidget(DOMWidget):
     # history tracking 
     history_list = List([]).tag(sync=True)
     deletedHistoryItem = Dict({}).tag(sync=True)
+    implicit_vis_list = List([]).tag(sync=True)
 
-    def __init__(self, currentVis=None, recommendations=None, intent=None, message=None, history_list=None, **kwargs):
+    def __init__(self, currentVis=None, recommendations=None, intent=None, message=None, history_list=None, implicit_vis_list=None, **kwargs):
         super().__init__(**kwargs)
         self.current_vis = currentVis
         self.recommendations = recommendations
         self.intent = intent
         self.message = message
         self.history_list = history_list
+        self.implicit_vis_list = implicit_vis_list

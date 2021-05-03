@@ -29,6 +29,7 @@ import {Tabs,Tab} from 'react-bootstrap';
 
 import ChartGalleryComponent from './chartGallery';
 import CurrentVisComponent from './currentVis';
+import CurrentImplicitComponent from './currentImplicit';
 import {dispatchLogEvent} from './utils';
 import ButtonsBroker from './buttonsBroker';
 import WarningBtn from './warningBtn';
@@ -82,7 +83,8 @@ export class LuxWidgetView extends DOMWidgetView {
       openInfo: boolean,
       historyList: any[],
       deletedHistoryItem: object,
-      showHistoryEditor: boolean
+      showHistoryEditor: boolean,
+      implicitVisList: any[]
     }
 
     class ReactWidget extends React.Component<LuxWidgetView,WidgetProps> {
@@ -113,11 +115,11 @@ export class LuxWidgetView extends DOMWidgetView {
           openInfo: false,
           historyList: props.model.get("history_list"),
           deletedHistoryItem: {},
-          showHistoryEditor: false
+          showHistoryEditor: false,
+          implicitVisList: props.model.get("implicit_vis_list")
         }
 
         // This binding is necessary to make `this` work in the callback
-        // NOTE: Will -- why is generate tabs not binded here as well?
         this.handleCurrentVisSelect = this.handleCurrentVisSelect.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
         this.exportSelection = this.exportSelection.bind(this);
@@ -394,11 +396,14 @@ export class LuxWidgetView extends DOMWidgetView {
                   </div>);
         } else if (this.state.recommendations.length > 0) {
           return (<div id="widgetContainer" style={{ flexDirection: 'column' }}>
-                    {/* {attributeShelf}
-                    {filterShelf} */}
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
-                      <CurrentVisComponent intent={this.state.intent} currentVisSpec={this.state.currentVis} numRecommendations={this.state.recommendations.length}
-                      onChange={this.handleCurrentVisSelect}/>
+                      
+                    {_.isEmpty(this.state.currentVis) ?              
+                        <CurrentImplicitComponent recs={this.state.implicitVisList} onChange={this.handleCurrentVisSelect}/>
+                        :
+                        <CurrentVisComponent intent={this.state.intent} currentVisSpec={this.state.currentVis} numRecommendations={this.state.recommendations.length} onChange={this.handleCurrentVisSelect}/>
+                        }
+                      
                       <div id="tabBanner">
                         <p className="title-description" style={{visibility: !_.isEmpty(this.state.currentVis) ? 'visible' : 'hidden' }}>You might be interested in...</p>
                         <Tabs activeKey={this.state.activeTab} id="tabBannerList" onSelect={this.handleSelect} className={!_.isEmpty(this.state.currentVis) ? "tabBannerPadding" : ""}>
