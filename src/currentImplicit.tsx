@@ -14,11 +14,16 @@
 
 import React, { Component } from 'react';
 import _ from 'lodash';
+import { withStyles } from "@material-ui/core/styles";
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
+
 import ChartGalleryComponent from './chartGallery';
 
 interface currentVisProps {
     recs: any[],
-    onChange: Function
+    onChange: Function,
+    numRecommendations: number
 }
 
 class CurrentImplicitComponent extends Component<currentVisProps, any> {
@@ -50,23 +55,81 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
     render() {
         if (!_.isEmpty(this.props.recs)) {
 
+            const styles = {
+                tooltip: {
+                    width: "100px",
+                    fontSize: "13px",
+                    marginTop: "10px",
+                    textAlign: 'center' as const
+                }
+            };
+            const CustomTooltip = withStyles(styles)(Tooltip);
+
+            const mainStyles = {
+                maxWidth: "45%",
+                borderRight: "0"
+            }
+
+            let mStyle = {}
+
+            if (this.props.numRecommendations !== 0) {
+                mStyle = mainStyles;
+            } else {
+                mStyle = {
+                    width: "100%"
+                }
+            }
+
             return (
-                <ChartGalleryComponent
-                    // this exists to prevent chart gallery from refreshing while changing tabs
-                    // This is an anti-pattern for React, but is necessary here because our chartgallery is very expensive to initialize
-                    key={'no refresh'}
-                    // ref={this.state.cgRef}
-                    title={this.props.recs[0].action}
-                    description={this.props.recs[0].description}
-                    multiple={true}
-                    maxSelectable={10}
-                    onChange={this.onItemSelect.bind(this)}
-                    graphSpec={this.props.recs[0].vspec}
-                    currentVisShow={false}
-                />
+                <div id="mainVizContainer" style={mStyle}>
+                    <div>
+                        <div>
+                            <p className="title-description"
+                                style={{
+                                    position: 'absolute',
+                                    fontSize: '20px',
+                                    height: '25px',
+                                    display: 'inline',
+                                    top: '10px',
+                                }}>Implicit Visualization</p>
 
+                            <p className="text-description"
+                                style={{
+                                    top: '40px',
+                                    position: 'absolute'
+                                }}>Visualizations based off your&nbsp;
+                                        <CustomTooltip title={"Column Selection: Origin"} arrow>
+                                    <Button
+                                        style={{
+                                            fontSize: "13px",
+                                            minWidth: "0px",
+                                            padding: "0px",
+                                            background: "aliceblue",
+                                            textTransform: "none",
+                                            borderBottom: "1px dotted #505050"
+                                        }}>recent analysis.</Button>
+                                </CustomTooltip>
+                            </p>
+                        </div>
+
+                    </div>
+                    <div id="mainVizInnerContainer">
+                        <ChartGalleryComponent
+                            // this exists to prevent chart gallery from refreshing while changing tabs
+                            // This is an anti-pattern for React, but is necessary here because our chartgallery is very expensive to initialize
+                            key={'no refresh'}
+                            // ref={this.state.cgRef}
+                            title={"implicit"}
+                            description={""}
+                            multiple={true}
+                            maxSelectable={10}
+                            onChange={this.onItemSelect.bind(this)}
+                            graphSpec={this.props.recs[0].vspec}
+                            currentVisShow={false}
+                        />
+                    </div>
+                </div>
             )
-
         } else {
             return (
                 <div className="placeHolderVizContainer">

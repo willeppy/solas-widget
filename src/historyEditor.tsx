@@ -18,8 +18,19 @@ class HistoryEditor extends Component<historyEditorProps, any> {
     render() {
         return (
             <div>
-                {/* <h2 className="light-text">History Editor</h2> */}
                 <div className="history-wrapper">
+                    <div>
+                        <p className="title-description"
+                            style={{
+                                fontSize: '20px',
+                                display: 'inline',
+                            }}> Analysis History</p>
+                        <p style={{
+                            marginLeft: "15px",
+                            color: "rgb(80, 80, 80)"
+                        }}>Your previous code and analysis history.</p>
+
+                    </div>
                     {this.props.history_list.map((history_item_data, idx) =>
                         <HistoryItem onDelete={this.props.onDelete} itemData={history_item_data} itemIdx={idx} />
                     )}

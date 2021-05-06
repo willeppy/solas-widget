@@ -24,13 +24,13 @@ class HistoryItem extends Component<historyItemProps, any> {
 
     render() {
         return (
-            <div className="card history-card" style={{ display: 'inline-block' }}>
+            <div className="card history-card">
                 <div className="card-header">
                     <h3 className="ma2">
                         <span className="light-text">History Item: </span>
                         <span className="emph-text">{this.props.itemData["op_name"]}</span>
                     </h3>
-                    <div className="ma2">
+                    <div className="ma2 card-delete">
                         <i className="fa fa-trash deleteIcon"
                             title='Delete this history item'
                             onClick={() => this.handleClick()} />

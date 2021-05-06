@@ -122,7 +122,7 @@
   }
   
   #mainVizInnerContainer{
-    margin-top: 50px;
+    margin-top: 75px;
   }
   
   #placeHolderVizContainer{
@@ -580,7 +580,14 @@
     margin: 0;
     background-color: #F7F7F7; 
     border-bottom: 1px solid #ebebeb;
-    display: flex;
+    /* display: flex; */
+    position: relative;
+  }
+
+  .card-delete {
+    position: absolute;
+    right: 10px;
+    top: 10px;
   }
 
   .light-text {
@@ -623,10 +630,9 @@
   }
 
   .history-card {
-    height: 250px;
-    width: 200px;
+    height: 150px;
+    width: 500px;
     min-width: 200px;
-
   }
 
   .history-code {
@@ -646,12 +652,10 @@
 
   .history-wrapper {
     border: .5px solid #bcbdbd;
-    border-top: 0;
-    display: flex;
-    flex-direction: row;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    /* white-space: nowrap; */
+    border-top: 0; /* no border on top */
+    overflow-y: scroll;
+    min-height: 75px;
+    max-height: 500px;
   }
 
   .feedback-button {

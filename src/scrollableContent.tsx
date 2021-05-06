@@ -13,74 +13,78 @@
 //  limitations under the License.
 
 import React, { Component } from 'react';
-import {dispatchLogEvent} from './utils';
-class ScrollableContent extends Component<{galleryItems: JSX.Element[],title:string, currentVisShow: boolean},any>  {
-  constructor(props:any){
+import { dispatchLogEvent } from './utils';
+class ScrollableContent extends Component<{ galleryItems: JSX.Element[], title: string, currentVisShow: boolean }, any>  {
+  constructor(props: any) {
     super(props)
     this.state = {
-        isScrolling:false,
-        firstScroll:true,
-        scrollIndicator: true,
+      isScrolling: false,
+      firstScroll: true,
+      scrollIndicator: true,
     }
-    this.handleScroll = this.handleScroll.bind(this)    
-    this.scrollStartStopListener = this.scrollStartStopListener.bind(this)    
+    this.handleScroll = this.handleScroll.bind(this)
+    this.scrollStartStopListener = this.scrollStartStopListener.bind(this)
   }
   handleScroll(event) {
     this.setState({
-      scrollIndicator:false,
-    });    
+      scrollIndicator: false,
+    });
     var component = this;
-    this.scrollStartStopListener(function(){
-        dispatchLogEvent("stopScroll",component.props.title)
-        component.setState({
-            firstScroll:true,
-        })
+    this.scrollStartStopListener(function () {
+      dispatchLogEvent("stopScroll", component.props.title)
+      component.setState({
+        firstScroll: true,
       })
+    })
   }
 
-  scrollStartStopListener(callback:CallableFunction) { 
-	if (!callback || typeof callback !== 'function') return;
-    if (this.state.firstScroll){
-        dispatchLogEvent("startScroll",this.props.title)
-        this.setState({
-            firstScroll:false,
-        })
+  scrollStartStopListener(callback: CallableFunction) {
+    if (!callback || typeof callback !== 'function') return;
+    if (this.state.firstScroll) {
+      dispatchLogEvent("startScroll", this.props.title)
+      this.setState({
+        firstScroll: false,
+      })
     }
-    
+
     window.clearTimeout(this.state.isScrolling); // Clear our timeout throughout the scroll
 
     // Set timeout to run after scrolling ends --> after timeout, set `isScrolling` 
     this.setState({
-        isScrolling:setTimeout(function() {
-            callback();
-        }, 60)
+      isScrolling: setTimeout(function () {
+        callback();
+      }, 60)
     })
 
-};
-  render(){
+  };
+  render() {
     let shouldShowScrollIndicator = false;
-    let numMoreCharts = this.props.galleryItems.length ;
+    // let numMoreCharts = this.props.galleryItems.length;
     if (this.props.currentVisShow && this.props.galleryItems.length > 2) {
       shouldShowScrollIndicator = true;
-      numMoreCharts -= 2;
+      // numMoreCharts -= 2;
     } else if (!this.props.currentVisShow && this.props.galleryItems.length > 3) {
       shouldShowScrollIndicator = true;
-      numMoreCharts -= 3;
+      // numMoreCharts -= 3;
     }
-    var scrollDescription:string;
-    if(numMoreCharts==1){
-      scrollDescription= "Scroll for "+numMoreCharts+" more chart"
-    }else{
-      scrollDescription= "Scroll for "+numMoreCharts+" more charts"
-    }
+    var scrollDescription = "Scroll for more charts";
+    // if (numMoreCharts == 1) {
+    //   scrollDescription = "Scroll for " + numMoreCharts + " more chart"
+    // } else {
+    //   scrollDescription = "Scroll for " + numMoreCharts + " more charts"
+    // }
     return (<div id="staticOuterDiv" className="recommendationStaticContentOuter" onScroll={this.handleScroll}>
-        <div id="mult-graph-container" className= "recommendationContentInner">
-            {this.props.galleryItems}
-        </div>
-        <div id="scroll-indicator-background" style={{visibility: this.state.scrollIndicator && shouldShowScrollIndicator ? 'visible' : 'hidden' }}>
-          <p id="scroll-indicator" style={{visibility: this.state.scrollIndicator && shouldShowScrollIndicator ? 'visible' : 'hidden' }}>{scrollDescription}<i id='first-arrow' className='fa fa-chevron-right'></i><i id='second-arrow' className='fa fa-chevron-right'></i> </p>
-          {/* onClick={(event)=>$('#staticOuterDiv').scrollLeft(500)} */}
-        </div>
+      <div id="mult-graph-container" className="recommendationContentInner">
+        {this.props.galleryItems}
+      </div>
+      <div id="scroll-indicator-background" style={{ display: this.state.scrollIndicator && shouldShowScrollIndicator ? 'inherit' : 'none' }}>
+        <p id="scroll-indicator" style={{ display: this.state.scrollIndicator && shouldShowScrollIndicator ? 'inherit' : 'none' }}>
+
+          {scrollDescription} <i id='first-arrow' className='fa fa-chevron-right'></i><i id='second-arrow' className='fa fa-chevron-right'></i>
+
+        </p>
+        {/* onClick={(event)=>$('#staticOuterDiv').scrollLeft(500)} */}
+      </div>
     </div>)
   }
 }
