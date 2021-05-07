@@ -416,14 +416,14 @@ export class LuxWidgetView extends DOMWidgetView {
               }
 
               <div id="tabBanner">
-                <p className="title-description"
+                <p className="tabTitle"
                   style={
                     {
                       visibility:
                         (!_.isEmpty(this.state.currentVis) || (this.state.implicitVisList.length > 0))
                           ? 'visible'
                           : 'hidden'
-                    }}>You might be interested in...</p>
+                    }}>Also consider...</p>
 
                 <Tabs
                   activeKey={this.state.activeTab}

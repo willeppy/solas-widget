@@ -134,6 +134,14 @@
     width: auto;
     overflow: hidden;
     flex: 1;
+    position: relative;
+    padding-top: 5px;
+  }
+
+  .tabTitle {
+    position: absolute;
+    top:14px;
+    left:15px;
   }
   #exportBtn{
     position: absolute;
@@ -268,7 +276,7 @@
   }
   
   .tabBannerPadding {
-    padding-left: 210px;
+    padding-left: 135px;
   }
   
   .nav-tabs .nav-item {
