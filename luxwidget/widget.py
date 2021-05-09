@@ -28,8 +28,9 @@ class LuxWidget(DOMWidget):
     history_list = List([]).tag(sync=True)
     deletedHistoryItem = Dict({}).tag(sync=True)
     implicit_vis_list = List([]).tag(sync=True)
+    selectedHistoryIdx = Int(-1).tag(sync=True)
 
-    def __init__(self, currentVis=None, recommendations=None, intent=None, message=None, history_list=None, implicit_vis_list=None, **kwargs):
+    def __init__(self, currentVis=None, recommendations=None, intent=None, message=None, history_list=[], implicit_vis_list=[], curr_hist_index=-1, **kwargs):
         super().__init__(**kwargs)
         self.current_vis = currentVis
         self.recommendations = recommendations
@@ -37,3 +38,4 @@ class LuxWidget(DOMWidget):
         self.message = message
         self.history_list = history_list
         self.implicit_vis_list = implicit_vis_list
+        self.selectedHistoryIdx = curr_hist_index 

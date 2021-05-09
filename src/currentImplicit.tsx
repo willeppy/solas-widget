@@ -23,7 +23,8 @@ import ChartGalleryComponent from './chartGallery';
 interface currentVisProps {
     recs: any[],
     onChange: Function,
-    numRecommendations: number
+    numRecommendations: number,
+    op_name: string
 }
 
 class CurrentImplicitComponent extends Component<currentVisProps, any> {
@@ -67,6 +68,7 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
 
             const mainStyles = {
                 maxWidth: "45%",
+                minWidth: "22%",
                 borderRight: "0"
             }
 
@@ -98,15 +100,14 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
                                     top: '40px',
                                     position: 'absolute'
                                 }}>Visualizations based off your&nbsp;
-                                        <CustomTooltip title={"Column Selection: Origin"} arrow>
+                                        <CustomTooltip title={this.props.op_name} arrow>
                                     <Button
                                         style={{
                                             fontSize: "13px",
                                             minWidth: "0px",
-                                            padding: "0px",
-                                            background: "aliceblue",
+                                            padding: "2px",
+                                            background: "#0f996066",
                                             textTransform: "none",
-                                            borderBottom: "1px dotted #505050"
                                         }}>recent analysis.</Button>
                                 </CustomTooltip>
                             </p>

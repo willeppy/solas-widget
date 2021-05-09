@@ -643,6 +643,11 @@
     min-width: 200px;
   }
 
+  .selectedHistoryCard {
+    border: 3px solid #0f9960;
+  }
+
+
   .history-code {
     font-family: monospace, serif;
     color: #1976D1;

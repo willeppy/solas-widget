@@ -82,10 +82,12 @@ export class LuxWidgetView extends DOMWidgetView {
       currentVisSelected: number,
       openWarning: boolean,
       openInfo: boolean,
+
       historyList: any[],
       deletedHistoryItem: object,
       showHistoryEditor: boolean,
-      implicitVisList: any[]
+      implicitVisList: any[],
+      selectedHistoryIdx: number
     }
 
     class ReactWidget extends React.Component<LuxWidgetView, WidgetProps> {
@@ -117,7 +119,8 @@ export class LuxWidgetView extends DOMWidgetView {
           historyList: props.model.get("history_list"),
           deletedHistoryItem: {},
           showHistoryEditor: false,
-          implicitVisList: props.model.get("implicit_vis_list")
+          implicitVisList: props.model.get("implicit_vis_list"),
+          selectedHistoryIdx: props.model.get("selectedHistoryIdx")
         }
 
         // This binding is necessary to make `this` work in the callback
@@ -129,6 +132,9 @@ export class LuxWidgetView extends DOMWidgetView {
         this.setIntent = this.setIntent.bind(this);
         this.closeExportInfo = this.closeExportInfo.bind(this);
         this.toggleInfoPanel = this.toggleInfoPanel.bind(this);
+
+        // wtf does this do?
+        this.onHistorySelectChange = this.onHistorySelectChange.bind(this)
       }
 
       toggleWarningPanel(e) {
@@ -342,9 +348,10 @@ export class LuxWidgetView extends DOMWidgetView {
           </div>
         }
       }
-
+      // ~~~~~~~~~~~~~~~~~~~~~
+      // HISTORY INTERACTIONS
+      // ~~~~~~~~~~~~~~~~~~~~~
       deleteHistoryItem(idx) {
-        //  TODO return gallery of history here.
         console.log("Adding to delete history list: ", idx)
 
         let deleted_item = this.state.historyList.splice(idx, 1)
@@ -358,6 +365,23 @@ export class LuxWidgetView extends DOMWidgetView {
 
         // update backend state
         view.model.set('deletedHistoryItem', mrd_item);
+        view.model.save();
+
+        // update selected history item if deleted
+        if (this.state.selectedHistoryIdx === idx) {
+          this.onHistorySelectChange(this.state.historyList.length - 1)
+        }
+      }
+
+      onHistorySelectChange(idx) {
+        console.log("Changing selected history item to index:", idx)
+
+        this.setState({
+          selectedHistoryIdx: idx
+        })
+
+        // update backend state
+        view.model.set('selectedHistoryIdx', idx);
         view.model.save();
       }
 
@@ -375,17 +399,31 @@ export class LuxWidgetView extends DOMWidgetView {
 
         let history_UI;
         if (this.state.showHistoryEditor) {
-          history_UI = <HistoryEditor onDelete={this.deleteHistoryItem.bind(this)} history_list={this.state.historyList} />
+          history_UI = <HistoryEditor
+            onDelete={this.deleteHistoryItem.bind(this)}
+            onChange={this.onHistorySelectChange}
+            history_list={this.state.historyList}
+            selectedIdx={this.state.selectedHistoryIdx} />
         }
 
-        console.log("Should show the text: " + (this.state.implicitVisList.length > 0))
+        console.log("[Widget Render]: history list -- " + this.state.historyList)
+        console.log("[Widget Render]: selectedHistoryIdx -- " + this.state.selectedHistoryIdx)
+
+        let op_name = this.state.historyList[this.state.selectedHistoryIdx] !== undefined ? this.state.historyList[this.state.selectedHistoryIdx].op_name : "";
+
+        console.log("[Widget Render]: op_name -- " + op_name)
+
 
 
         if (this.state.recommendations.length == 0) {
           return (<div id="oneViewWidgetContainer" style={{ flexDirection: 'column' }}>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               {_.isEmpty(this.state.currentVis) ?
-                <CurrentImplicitComponent recs={this.state.implicitVisList} numRecommendations={this.state.recommendations.length} onChange={this.handleCurrentVisSelect} />
+                <CurrentImplicitComponent
+                  recs={this.state.implicitVisList}
+                  op_name={op_name}
+                  numRecommendations={this.state.recommendations.length}
+                  onChange={this.handleCurrentVisSelect} />
                 :
                 <CurrentVisComponent intent={this.state.intent} currentVisSpec={this.state.currentVis} numRecommendations={this.state.recommendations.length} onChange={this.handleCurrentVisSelect} />
               }
@@ -410,7 +448,11 @@ export class LuxWidgetView extends DOMWidgetView {
             <div style={{ display: 'flex', flexDirection: 'row' }}>
 
               {_.isEmpty(this.state.currentVis) ?
-                <CurrentImplicitComponent recs={this.state.implicitVisList} numRecommendations={this.state.recommendations.length} onChange={this.handleCurrentVisSelect} />
+                <CurrentImplicitComponent
+                  recs={this.state.implicitVisList}
+                  op_name={op_name}
+                  numRecommendations={this.state.recommendations.length}
+                  onChange={this.handleCurrentVisSelect} />
                 :
                 <CurrentVisComponent intent={this.state.intent} currentVisSpec={this.state.currentVis} numRecommendations={this.state.recommendations.length} onChange={this.handleCurrentVisSelect} />
               }

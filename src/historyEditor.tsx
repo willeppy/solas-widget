@@ -3,7 +3,9 @@ import HistoryItem from './historyItem'
 
 interface historyEditorProps {
     history_list: any[],
-    onDelete: Function
+    onDelete: Function,
+    onChange: Function,
+    selectedIdx: number
 }
 
 class HistoryEditor extends Component<historyEditorProps, any> {
@@ -32,7 +34,14 @@ class HistoryEditor extends Component<historyEditorProps, any> {
 
                     </div>
                     {this.props.history_list.map((history_item_data, idx) =>
-                        <HistoryItem onDelete={this.props.onDelete} itemData={history_item_data} itemIdx={idx} />
+                        <HistoryItem
+                            key={idx}
+                            itemIdx={idx}
+                            onDelete={this.props.onDelete}
+                            onClick={(e) => {this.props.onChange(idx)}}
+                            selected={(this.props.selectedIdx === idx)}
+                            itemData={history_item_data}
+                        />
                     )}
 
                 </div>
