@@ -1,8 +1,11 @@
 language: python
 python:
   - "3.7"
+node_js:
+  - 13
 install:
+  - node -v
   - pip install -r requirements.txt
-  - pip install git+https://github.com/lux-org/lux-widget
+  - pip install git+https://github.com/willeppy/lux-widget
 script:
   - echo "successful build" 

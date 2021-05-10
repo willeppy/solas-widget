@@ -24,20 +24,20 @@
     "style/index.js",
     "style/*.css"
   ],
-  "homepage": "https://github.com/lux-org/lux-widget",
+  "homepage": "https://github.com/willeppy/lux-widget",
   "bugs": {
-    "url": "https://github.com/lux-org/lux-widget/issues"
+    "url": "https://github.com/willeppy/lux-widget/issues"
   },
   "license": "Apache-2.0",
   "author": {
-    "name": "Doris Jung-Lin Lee",
-    "email": "dorisjunglinlee@gmail.com"
+    "name": "Will Epperson",
+    "email": "willepp@cmu.edu"
   },
   "main": "lib/index.js",
   "types": "./lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lux-org/lux-widget"
+    "url": "https://github.com/willeppy/lux-widget"
   },
   "scripts": {
     "build": "jlpm run build:lib && jlpm run build:labextension:dev",
