@@ -31,7 +31,7 @@ class HistoryItem extends Component<historyItemProps, any> {
             dClass += " selectedHistoryCard"
         }
 
-        console.log("Item data: ", this.props.itemData)
+        // console.log("Item data: ", this.props.itemData)
 
         return (
             <div className={dClass} onClick={this.props.onClick}>

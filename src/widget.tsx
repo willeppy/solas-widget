@@ -168,7 +168,7 @@ export class LuxWidgetView extends DOMWidgetView {
 
       // called when the variable is changed in the view.model
       onChange(model: any) {
-        console.log("Variable changed: ", model.changed)
+        // console.log("Variable changed: ", model.changed)
         this.setState(model.changed);
       }
 
@@ -352,7 +352,7 @@ export class LuxWidgetView extends DOMWidgetView {
       // HISTORY INTERACTIONS
       // ~~~~~~~~~~~~~~~~~~~~~
       deleteHistoryItem(idx) {
-        console.log("Adding to delete history list: ", idx)
+        // console.log("Adding to delete history list: ", idx)
 
         let deleted_item = this.state.historyList.splice(idx, 1)
         let mrd_item = { "item": deleted_item, "idx": idx };
@@ -374,7 +374,7 @@ export class LuxWidgetView extends DOMWidgetView {
       }
 
       onHistorySelectChange(idx) {
-        console.log("Changing selected history item to index:", idx)
+        // console.log("Changing selected history item to index:", idx)
 
         this.setState({
           selectedHistoryIdx: idx
@@ -406,14 +406,7 @@ export class LuxWidgetView extends DOMWidgetView {
             selectedIdx={this.state.selectedHistoryIdx} />
         }
 
-        console.log("[Widget Render]: history list -- " + this.state.historyList)
-        console.log("[Widget Render]: selectedHistoryIdx -- " + this.state.selectedHistoryIdx)
-
         let op_name = this.state.historyList[this.state.selectedHistoryIdx] !== undefined ? this.state.historyList[this.state.selectedHistoryIdx].op_name : "";
-
-        console.log("[Widget Render]: op_name -- " + op_name)
-
-
 
         if (this.state.recommendations.length == 0) {
           return (<div id="oneViewWidgetContainer" style={{ flexDirection: 'column' }}>
