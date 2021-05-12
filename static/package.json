@@ -21,9 +21,9 @@
     "dist/*.js",
     "css/*.css"
   ],
-  "homepage": "https://github.com/lux-org/lux-widget",
+  "homepage": "https://github.com/willeppy/lux-widget",
   "bugs": {
-    "url": "https://github.com/lux-org/lux-widget/issues"
+    "url": "https://github.com/willeppy/lux-widget/issues"
   },
   "license": "Apache-2.0",
   "author": {
@@ -34,7 +34,7 @@
   "types": "./lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lux-org/lux-widget"
+    "url": "https://github.com/willeppy/lux-widget"
   },
   "scripts": {
     "postinstall": "pip install . && jupyter nbextension install --sys-prefix --symlink --overwrite --py luxwidget && jupyter nbextension enable --sys-prefix --py luxwidget",

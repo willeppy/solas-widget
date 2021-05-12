@@ -1,5 +1,5 @@
 {% set name = "lux-widget" %}
-{% set version = "0.1.3" %}
+{% set version = "0.1.5" %}
 
 
 package:
@@ -38,7 +38,7 @@ test:
     - pip
 
 about:
-  home: https://github.com/lux-org/lux-widget
+  home: https://github.com/willeppy/lux-widget
   summary: Jupyter Widget for Intelligent Data Discovery
   license: Apache-2.0
   license_file: LICENSE
