@@ -411,7 +411,7 @@ export class LuxWidgetView extends DOMWidgetView {
         if (this.state.recommendations.length == 0) {
           return (<div id="oneViewWidgetContainer" style={{ flexDirection: 'column' }}>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-              {_.isEmpty(this.state.currentVis) ?
+              {_.isEmpty(this.state.intent) ?
                 <CurrentImplicitComponent
                   recs={this.state.implicitVisList}
                   op_name={op_name}
@@ -440,7 +440,7 @@ export class LuxWidgetView extends DOMWidgetView {
           return (<div id="widgetContainer" style={{ flexDirection: 'column' }}>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
 
-              {_.isEmpty(this.state.currentVis) ?
+              {_.isEmpty(this.state.intent) ?
                 <CurrentImplicitComponent
                   recs={this.state.implicitVisList}
                   op_name={op_name}
