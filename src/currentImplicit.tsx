@@ -59,10 +59,13 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
         this.setState({
             filterView: !this.state.filterView
         });
-        for (var i = 1; i < this.props.recs[0].vspec.length; i++) {
-            if(this.state.filterView){
+        if(this.state.filterView){
+            this.props.recs[0].vspec[0]["transform"] = [{"filter": {"field": "In filter?", "equal": true}}];
+            for (var i = 1; i < this.props.recs[0].vspec.length; i++) {
                 this.props.recs[0].vspec[i]["transform"] = [{"filter": {"field": "filt_mask", "equal": true}}];
-            } else {
+            }
+        } else {
+            for (var i = 0; i < this.props.recs[0].vspec.length; i++) {
                 delete this.props.recs[0].vspec[i]["transform"];
             }
         }
