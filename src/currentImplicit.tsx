@@ -52,7 +52,7 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
     // }
 
     onItemSelect(idx) {
-        console.log("on item select in implicit:" + idx)
+        console.log("on item select in implicit: " + idx)
     }
 
     switchFilterView(){
@@ -101,20 +101,19 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
             }
 
             var vspec = this.props.recs[0].vspec
-            // console.log("spec" + JSON.stringify(vspec[0]["encoding"]))
-            // for (var i = 1; i < vspec.length; i++) {
-            //     if("transform" in vspec[i]){
-            //         console.log("tranform " + JSON.stringify(vspec[i]["transform"]));
-            //     } else {
-            //         console.log("transform filter does not exist");
-            //     }
-            // }
-            var filterSwitchEnabled = (vspec.length > 0 && "encoding" in vspec[0] && "y" in vspec[0]["encoding"] && 
+            for (var i = 0; i < vspec.length; i++) {
+                if("encoding" in vspec[i]){
+                    console.log("tranform " + JSON.stringify(vspec[i]["encoding"]));
+                } else {
+                    console.log("encoding does not exist");
+                }
+            }
+            var filterSwitchEnabled = (vspec.length > 0 && "encoding" in vspec[0] && "y" in vspec[0]["encoding"] && "title" in vspec[0]["encoding"]["y"] &&
                 JSON.stringify(vspec[0]["encoding"]["y"]["title"]).substring(1, JSON.stringify(vspec[0]["encoding"]["y"]["title"]).length - 1) == "Filtered Data Count")
 
             // the variable op_name is not a perfect indicator of when there will be a filter chart.
             // the comman characteristic is that the first implicit vis should be a chart about filter count
-            // console.log("filterSwitchEnabled: " + filterSwitchEnabled)
+            console.log("filterSwitchEnabled: " + filterSwitchEnabled)
             let filterSwitch_UI;
             if(filterSwitchEnabled) {
                 filterSwitch_UI = <Button style={{
@@ -175,7 +174,7 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
                             multiple={true}
                             maxSelectable={10}
                             onChange={this.onItemSelect.bind(this)}
-                            graphSpec={this.props.recs[0].vspec}
+                            graphSpec={vspec}
                             currentVisShow={false}
                         />
                     </div>
