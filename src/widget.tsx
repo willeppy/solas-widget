@@ -32,10 +32,8 @@ import CurrentVisComponent from './currentVis';
 import CurrentImplicitComponent from './currentImplicit';
 import { dispatchLogEvent } from './utils';
 import ButtonsBroker from './buttonsBroker';
-import WarningBtn from './warningBtn';
-import InfoBtn from './infoBtn';
 import HistoryEditor from "./historyEditor";
-import HistoryBtn from "./historyBtn";
+import BottomMessage from './bottomMessages';
 
 
 export class LuxModel extends DOMWidgetModel {
@@ -135,9 +133,10 @@ export class LuxWidgetView extends DOMWidgetView {
 
         // wtf does this do?
         this.onHistorySelectChange = this.onHistorySelectChange.bind(this)
+        this.toggleHistoryEditor = this.toggleHistoryEditor.bind(this)
       }
 
-      toggleWarningPanel(e) {
+      toggleWarningPanel() {
         if (this.state.openWarning) {
           dispatchLogEvent("closeWarning", this.state.message);
           this.setState({ openWarning: false });
@@ -148,7 +147,7 @@ export class LuxWidgetView extends DOMWidgetView {
       }
 
       // called to toggle the long description panel
-      toggleInfoPanel(e) {
+      toggleInfoPanel() {
         if (this.state.openInfo) {
           dispatchLogEvent("closeInfo", this.state.longDescription);
           this.setState({ openInfo: false });
@@ -409,81 +408,98 @@ export class LuxWidgetView extends DOMWidgetView {
         let op_name = this.state.historyList[this.state.selectedHistoryIdx] !== undefined ? this.state.historyList[this.state.selectedHistoryIdx].op_name : "";
 
         if (this.state.recommendations.length == 0) {
-          return (<div id="oneViewWidgetContainer" style={{ flexDirection: 'column' }}>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-              {_.isEmpty(this.state.intent) ?
-                <CurrentImplicitComponent
-                  recs={this.state.implicitVisList}
-                  op_name={op_name}
-                  numRecommendations={this.state.recommendations.length}
-                  onChange={this.handleCurrentVisSelect} />
-                :
-                <CurrentVisComponent intent={this.state.intent} currentVisSpec={this.state.currentVis} numRecommendations={this.state.recommendations.length} onChange={this.handleCurrentVisSelect} />
-              }
-            </div>
-            {history_UI}
+          return (
+            <div id="oneViewWidgetContainer" style={{ flexDirection: 'column' }}>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                {_.isEmpty(this.state.intent) ?
+                  <CurrentImplicitComponent
+                    recs={this.state.implicitVisList}
+                    op_name={op_name}
+                    numRecommendations={this.state.recommendations.length}
+                    onChange={this.handleCurrentVisSelect} />
+                  :
+                  <CurrentVisComponent
+                    intent={this.state.intent}
+                    currentVisSpec={this.state.currentVis}
+                    numRecommendations={this.state.recommendations.length}
+                    onChange={this.handleCurrentVisSelect} />
+                }
 
-            <ButtonsBroker buttonsEnabled={buttonsEnabled}
-              deleteSelection={this.deleteSelection}
-              exportSelection={this.exportSelection}
-              setIntent={this.setIntent}
-              closeExportInfo={this.closeExportInfo}
-              tabItems={this.state.tabItems}
-              showAlert={this.state.showAlert}
-              intentEnabled={intentEnabled}
-            />
-            <HistoryBtn onClick={this.toggleHistoryEditor.bind(this)} />
-
-            {this.generateNoRecsWarning()}
-          </div>);
-        } else if (this.state.recommendations.length > 0) {
-          return (<div id="widgetContainer" style={{ flexDirection: 'column' }}>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-
-              {_.isEmpty(this.state.intent) ?
-                <CurrentImplicitComponent
-                  recs={this.state.implicitVisList}
-                  op_name={op_name}
-                  numRecommendations={this.state.recommendations.length}
-                  onChange={this.handleCurrentVisSelect} />
-                :
-                <CurrentVisComponent intent={this.state.intent} currentVisSpec={this.state.currentVis} numRecommendations={this.state.recommendations.length} onChange={this.handleCurrentVisSelect} />
-              }
-
-              <div id="tabBanner">
-                <p className="tabTitle"
-                  style={
-                    {
-                      visibility:
-                        (!_.isEmpty(this.state.currentVis) || (this.state.implicitVisList.length > 0))
-                          ? 'visible'
-                          : 'hidden'
-                    }}>Also consider...</p>
-
-                <Tabs
-                  activeKey={this.state.activeTab}
-                  id="tabBannerList"
-                  onSelect={this.handleSelect}
-                  className={(!_.isEmpty(this.state.currentVis) || (this.state.implicitVisList.length > 0)) ? "tabBannerPadding" : ""}>
-                  {this.state.tabItems}
-                </Tabs>
+                <ButtonsBroker
+                  buttonsEnabled={buttonsEnabled}
+                  deleteSelection={this.deleteSelection}
+                  exportSelection={this.exportSelection}
+                  setIntent={this.setIntent}
+                  closeExportInfo={this.closeExportInfo}
+                  tabItems={this.state.tabItems}
+                  showAlert={this.state.showAlert}
+                  intentEnabled={intentEnabled}
+                  historyClick={this.toggleHistoryEditor}
+                  infoClick={this.toggleInfoPanel}
+                  warningClick={this.toggleWarningPanel}
+                />
               </div>
-            </div>
-            {history_UI}
+              {history_UI}
 
-            <ButtonsBroker buttonsEnabled={buttonsEnabled}
-              deleteSelection={this.deleteSelection}
-              exportSelection={this.exportSelection}
-              setIntent={this.setIntent}
-              closeExportInfo={this.closeExportInfo}
-              tabItems={this.state.tabItems}
-              showAlert={this.state.showAlert}
-              intentEnabled={intentEnabled}
-            />
-            <InfoBtn message={this.state.longDescription} toggleInfoPanel={this.toggleInfoPanel} openInfo={this.state.openInfo} />
-            <WarningBtn message={this.state.message} toggleWarningPanel={this.toggleWarningPanel} openWarning={this.state.openWarning} />
-            <HistoryBtn onClick={this.toggleHistoryEditor.bind(this)} />
-          </div>);
+              <BottomMessage
+                infoMessage={this.state.longDescription}
+                openInfo={this.state.openInfo}
+                warningMessage={this.state.message}
+                openWarning={this.state.openWarning} />
+
+              {this.generateNoRecsWarning()}
+            </div>);
+
+        } else if (this.state.recommendations.length > 0) {
+          return (
+            <div id="widgetContainer" style={{ flexDirection: 'column' }}>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+
+                {_.isEmpty(this.state.intent) ?
+                  <CurrentImplicitComponent
+                    recs={this.state.implicitVisList}
+                    op_name={op_name}
+                    numRecommendations={this.state.recommendations.length}
+                    onChange={this.handleCurrentVisSelect} />
+                  :
+                  <CurrentVisComponent
+                    intent={this.state.intent}
+                    currentVisSpec={this.state.currentVis}
+                    numRecommendations={this.state.recommendations.length}
+                    onChange={this.handleCurrentVisSelect} />
+                }
+
+                <div id="tabBanner">
+                  <Tabs
+                    activeKey={this.state.activeTab}
+                    id="tabBannerList"
+                    onSelect={this.handleSelect}
+                  // className={(!_.isEmpty(this.state.currentVis) || (this.state.implicitVisList.length > 0)) ? "tabBannerPadding" : ""}
+                  >
+                    {this.state.tabItems}
+                  </Tabs>
+                </div>
+
+                <ButtonsBroker
+                  buttonsEnabled={buttonsEnabled}
+                  deleteSelection={this.deleteSelection}
+                  exportSelection={this.exportSelection}
+                  setIntent={this.setIntent}
+                  closeExportInfo={this.closeExportInfo}
+                  tabItems={this.state.tabItems}
+                  showAlert={this.state.showAlert}
+                  intentEnabled={intentEnabled}
+                  historyClick={this.toggleHistoryEditor}
+                  infoClick={this.toggleInfoPanel}
+                  warningClick={this.toggleWarningPanel}
+                />
+
+              </div>
+              {history_UI}
+              <BottomMessage
+                infoMessage={this.state.longDescription} openInfo={this.state.openInfo} warningMessage={this.state.message} openWarning={this.state.openWarning} />
+
+            </div>);
         }
       }
     }

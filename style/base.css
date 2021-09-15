@@ -143,40 +143,50 @@
     top:14px;
     left:15px;
   }
-  #exportBtn{
-    position: absolute;
-    /* bottom: 90%; */
-    /* left: 97%; */
-    top: 5px;
+
+  .buttons {
+    /* float:right; */
+    border-right: 0.5px solid #bcbdbd;
+    border-top: 0.5px solid #bcbdbd;
+    border-bottom: 0.5px solid #bcbdbd;
+  }
+
+  i.sideButton {
+    display: block;
+    font-size: 20px;
+    padding: 5px;
+  }
+
+  
+  /* #exportBtn{
+    display: block;
+    bottom: 5px;
     right: 5px;
     font-size: 20px;
     padding: 5px;
   }
   
   #deleteBtn{
-    position: absolute;
-    top: 5px;
-    right: 33px;
+    display: block;
     font-size: 20px;
     padding: 5px;
   }
   
   #intentBtn{
-    position: absolute;
-    top: 5px;
+    display: block;
+    bottom: 5px;
     right: 59px;
     font-size: 20px;
     padding: 5px;
-  }
+  } */
 
-  #editHistoryBtn{
-    /* color: #ffbc00; */
-    position: absolute;
-    top: 5px;
+  /* #editHistoryBtn{
+    display: block;
+    bottom: 5px;
     right: 85px;
     font-size: 20px;
     padding: 5px;
-  }
+  } */
   
   #alertBox{
     position: absolute;
@@ -543,11 +553,11 @@
   
   #warnBtn{
     color: #ffbc00;
-    position: absolute;
-    top: 5px;
+    /* display: block;
+    bottom: 5px;
     right: 117px;
     font-size: 20px;
-    padding: 5px;
+    padding: 5px; */
   }
   #warnBtn:hover{
     color:black;
@@ -558,13 +568,13 @@
     margin-left: 5px;
     margin-right: 30px;
   }
-  #infoBtn{
-    position: absolute;
+  /* #infoBtn{
+    display: block;
     top: 45px;
     right: 5px;
     font-size: 20px;
     padding: 5px;
-  }
+  } */
   .infoMsgText{
     color: rgb(80, 80, 80);
     margin-top: 5px;
@@ -691,4 +701,8 @@
     color: #e8912e;
     border-color: #e8912e;
   }
+
+  .switchFilterViewBtn:hover {
+    background: #dbdbdb;
+  } 
   

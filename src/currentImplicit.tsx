@@ -20,6 +20,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import ChartGalleryComponent from './chartGallery';
 
+import '../style/base.css'
+
 interface currentVisProps {
     recs: any[],
     onChange: Function,
@@ -55,14 +57,14 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
         console.log("on item select in implicit: " + idx)
     }
 
-    switchFilterView(){
+    switchFilterView() {
         this.setState({
             filterView: !this.state.filterView
         });
-        if(this.state.filterView){
-            this.props.recs[0].vspec[0]["transform"] = [{"filter": {"field": "In filter?", "equal": true}}];
+        if (this.state.filterView) {
+            this.props.recs[0].vspec[0]["transform"] = [{ "filter": { "field": "In filter?", "equal": true } }];
             for (var i = 1; i < this.props.recs[0].vspec.length; i++) {
-                this.props.recs[0].vspec[i]["transform"] = [{"filter": {"field": "filt_mask", "equal": true}}];
+                this.props.recs[0].vspec[i]["transform"] = [{ "filter": { "field": "filt_mask", "equal": true } }];
             }
         } else {
             for (var i = 0; i < this.props.recs[0].vspec.length; i++) {
@@ -102,7 +104,7 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
 
             var vspec = this.props.recs[0].vspec
             for (var i = 0; i < vspec.length; i++) {
-                if("encoding" in vspec[i]){
+                if ("encoding" in vspec[i]) {
                     console.log("tranform " + JSON.stringify(vspec[i]["encoding"]));
                 } else {
                     console.log("encoding does not exist");
@@ -115,18 +117,21 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
             // the comman characteristic is that the first implicit vis should be a chart about filter count
             console.log("filterSwitchEnabled: " + filterSwitchEnabled)
             let filterSwitch_UI;
-            if(filterSwitchEnabled) {
-                filterSwitch_UI = <Button style={{
-                                            fontSize: "13px",
-                                            minWidth: "0px",
-                                            textTransform: "none",
-                                            display: "float",
-                                            left: "70%",
-                                            top: "10px",
-                                            background: "lightyellow",
-                                        }}
-                                    onClick={this.switchFilterView.bind(this)}
-                                >Switch Filter View</Button>
+            if (filterSwitchEnabled) {
+                filterSwitch_UI = <Button
+                    className="switchFilterViewBtn"
+                    style={{
+                        fontSize: "13px",
+                        minWidth:  "0px",
+                        textTransform: "none",
+                        display: "float",
+                        left: "15px",
+                        top: "65px",
+                        background: "#eeeeee",
+                        border: "1px solid #b8b8b8",
+                    }}
+                    onClick={this.switchFilterView.bind(this)}
+                >Toggle Background</Button>
             }
             return (
                 <div id="mainVizContainer" style={mStyle}>
@@ -149,7 +154,7 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
                                     top: '40px',
                                     position: 'absolute'
                                 }}>Visualizations based off your&nbsp;
-                                        <CustomTooltip title={this.props.op_name} arrow>
+                                <CustomTooltip title={this.props.op_name} arrow>
                                     <Button
                                         style={{
                                             fontSize: "13px",
