@@ -124,6 +124,10 @@
   #mainVizInnerContainer{
     margin-top: 75px;
   }
+
+  #implicitInnerContainer{
+    margin-top: 25px;
+  }
   
   #placeHolderVizContainer{
     min-height: 100%;

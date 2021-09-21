@@ -87,8 +87,8 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
             const CustomTooltip = withStyles(styles)(Tooltip);
 
             const mainStyles = {
-                maxWidth: "45%",
-                minWidth: "22%",
+                maxWidth: "50%",
+                minWidth: "25%",
                 borderRight: "0"
             }
 
@@ -122,11 +122,9 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
                     className="switchFilterViewBtn"
                     style={{
                         fontSize: "13px",
-                        minWidth:  "0px",
+                        minWidth: "0px",
                         textTransform: "none",
-                        display: "float",
-                        left: "15px",
-                        top: "65px",
+                        display: "inline-block",
                         background: "#eeeeee",
                         border: "1px solid #b8b8b8",
                     }}
@@ -136,39 +134,26 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
             return (
                 <div id="mainVizContainer" style={mStyle}>
                     <div>
-                        <div>
-                            <div className="title-button-box">
-                                <p className="title-description"
+                        <p className=""
+                            style={{
+                                padding: '10px 0px 10px 0px',
+                                margin: "0px 10px",
+                                display: "inline-block"
+                            }}>Visualizations based off your&nbsp;
+                            <CustomTooltip title={this.props.op_name} arrow>
+                                <Button
                                     style={{
-                                        display: "float",
-                                        width: "50%",
-                                        fontSize: '20px',
-                                        height: '25px',
-                                        top: '10px',
-                                    }}>Implicit Visualization</p>
-                                {filterSwitch_UI}
-                            </div>
-
-                            <p className="text-description"
-                                style={{
-                                    top: '40px',
-                                    position: 'absolute'
-                                }}>Visualizations based off your&nbsp;
-                                <CustomTooltip title={this.props.op_name} arrow>
-                                    <Button
-                                        style={{
-                                            fontSize: "13px",
-                                            minWidth: "0px",
-                                            padding: "2px",
-                                            background: "#0f996066",
-                                            textTransform: "none",
-                                        }}>recent analysis.</Button>
-                                </CustomTooltip>
-                            </p>
-                        </div>
-
+                                        fontSize: "13px",
+                                        minWidth: "0px",
+                                        padding: "2px",
+                                        background: "#0f996066",
+                                        textTransform: "none",
+                                    }}>recent analysis.</Button>
+                            </CustomTooltip>
+                        </p>
+                        {filterSwitch_UI}
                     </div>
-                    <div id="mainVizInnerContainer">
+                    <div id="implicitInnerContainer">
                         <ChartGalleryComponent
                             // this exists to prevent chart gallery from refreshing while changing tabs
                             // This is an anti-pattern for React, but is necessary here because our chartgallery is very expensive to initialize
