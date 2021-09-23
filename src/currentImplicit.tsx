@@ -17,6 +17,8 @@ import _ from 'lodash';
 import { withStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
+import Checkbox from '@material-ui/core/Checkbox';
+
 
 import ChartGalleryComponent from './chartGallery';
 
@@ -62,6 +64,7 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
             filterView: !this.state.filterView
         });
         if (this.state.filterView) {
+            // filter chart
             this.props.recs[0].vspec[0]["transform"] = [{ "filter": { "field": "In filter?", "equal": true } }];
             for (var i = 1; i < this.props.recs[0].vspec.length; i++) {
                 this.props.recs[0].vspec[i]["transform"] = [{ "filter": { "field": "filt_mask", "equal": true } }];
@@ -69,9 +72,12 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
         } else {
             for (var i = 0; i < this.props.recs[0].vspec.length; i++) {
                 delete this.props.recs[0].vspec[i]["transform"];
+                // delete the legend here
+                // this.props.recs[0].vspec[i]["config"] = Object.assign(this.props.recs[0].vspec[i]["config"] || {}, { "legend": { "disable": true } })
             }
         }
         console.log("Change filter view to " + this.state.filterView)
+        console.log(this.props.recs)
     }
     render() {
         if (!_.isEmpty(this.props.recs)) {
@@ -88,11 +94,12 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
 
             const mainStyles = {
                 maxWidth: "50%",
-                minWidth: "25%",
+                minWidth: "26%", // so that it fits the title
                 borderRight: "0"
             }
 
             let mStyle = {}
+            let wrapperSpacingStyle = { marginTop: "25px" }
 
             if (this.props.numRecommendations !== 0) {
                 mStyle = mainStyles;
@@ -110,35 +117,50 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
                     console.log("encoding does not exist");
                 }
             }
-            var filterSwitchEnabled = (vspec.length > 0 && "encoding" in vspec[0] && "y" in vspec[0]["encoding"] && "title" in vspec[0]["encoding"]["y"] &&
-                JSON.stringify(vspec[0]["encoding"]["y"]["title"]).substring(1, JSON.stringify(vspec[0]["encoding"]["y"]["title"]).length - 1) == "Filtered Data Count")
+            var filterSwitchEnabled = (vspec.length > 0
+                && "encoding" in vspec[0]
+                && "y" in vspec[0]["encoding"]
+                && "title" in vspec[0]["encoding"]["y"]
+                && JSON.stringify(
+                    vspec[0]["encoding"]["y"]["title"]).substring(1, JSON.stringify(vspec[0]["encoding"]["y"]["title"]).length - 1) == "Filtered Data Count")
 
             // the variable op_name is not a perfect indicator of when there will be a filter chart.
             // the comman characteristic is that the first implicit vis should be a chart about filter count
             console.log("filterSwitchEnabled: " + filterSwitchEnabled)
-            let filterSwitch_UI;
+            let filterSwitchUI;
+            let legendUI;
+
             if (filterSwitchEnabled) {
-                filterSwitch_UI = <Button
-                    className="switchFilterViewBtn"
-                    style={{
-                        fontSize: "13px",
-                        minWidth: "0px",
-                        textTransform: "none",
-                        display: "inline-block",
-                        background: "#eeeeee",
-                        border: "1px solid #b8b8b8",
-                    }}
-                    onClick={this.switchFilterView.bind(this)}
-                >Toggle Background</Button>
+
+                wrapperSpacingStyle = { marginTop: "0px" }
+
+                filterSwitchUI = <label className="implicitHeaderItem"> Show unfiltered?
+                    <Checkbox
+                        checked={this.state.filterView}
+                        onChange={this.switchFilterView.bind(this)}
+                        color="default"
+                        size="small" />
+                </label>
+
+                if (this.state.filterView) {
+                    legendUI = <div className="implicitHeaderItem">
+                        <div style={{ display: "inline-block" }}>
+                            Current data <div className="filtLegendItem" style={{ backgroundColor: "#4C78A8" }} />
+                        </div>
+                        <div style={{ display: "inline-block", marginLeft: "10px" }}>
+                            Unfiltered data <div className="filtLegendItem" style={{ backgroundColor: "#ededed" }} />
+                        </div>
+                    </div>
+                }
             }
             return (
                 <div id="mainVizContainer" style={mStyle}>
                     <div>
-                        <p className=""
+                        <p className="implicitHeaderItem"
                             style={{
-                                padding: '10px 0px 10px 0px',
-                                margin: "0px 10px",
-                                display: "inline-block"
+                                // padding: '10px 0px 10px 0px',
+                                display: "block",
+                                fontWeight: 500
                             }}>Visualizations based off your&nbsp;
                             <CustomTooltip title={this.props.op_name} arrow>
                                 <Button
@@ -151,9 +173,10 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
                                     }}>recent analysis.</Button>
                             </CustomTooltip>
                         </p>
-                        {filterSwitch_UI}
+                        {filterSwitchUI}
+                        {legendUI}
                     </div>
-                    <div id="implicitInnerContainer">
+                    <div id="" style={wrapperSpacingStyle}>
                         <ChartGalleryComponent
                             // this exists to prevent chart gallery from refreshing while changing tabs
                             // This is an anti-pattern for React, but is necessary here because our chartgallery is very expensive to initialize

@@ -125,9 +125,9 @@
     margin-top: 75px;
   }
 
-  #implicitInnerContainer{
+  /* #implicitInnerContainer{
     margin-top: 25px;
-  }
+  } */
   
   #placeHolderVizContainer{
     min-height: 100%;
@@ -709,4 +709,16 @@
   .switchFilterViewBtn:hover {
     background: #dbdbdb;
   } 
+
+  .filtLegendItem {
+    height: 11px;
+    width: 11px;
+    display: inline-block;
+    border-radius: 2px;
+  }
+
+  .implicitHeaderItem {
+    margin-left: 10px;
+    display: inline-block;
+  }
   
