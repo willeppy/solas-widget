@@ -455,7 +455,7 @@ export class LuxWidgetView extends DOMWidgetView {
             <div id="widgetContainer" style={{ flexDirection: 'column' }}>
               <div style={{ display: 'flex', flexDirection: 'row' }}>
 
-                {_.isEmpty(this.state.intent) ?
+                {(_.isEmpty(this.state.intent) && _.isEmpty(this.state.currentVis)) ?
                   <CurrentImplicitComponent
                     recs={this.state.implicitVisList}
                     op_name={op_name}
