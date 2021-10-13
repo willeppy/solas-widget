@@ -1,3 +1,3 @@
 sh install.sh
-cd ../lux/
+cd ../solas/
 jupyter notebook

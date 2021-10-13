@@ -1,4 +1,4 @@
-{% set name = "lux-widget" %}
+{% set name = "solas-widget" %}
 {% set version = "0.1.5" %}
 
 
@@ -7,7 +7,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/lux-widget-{{ version }}.tar.gz
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/solas-widget-{{ version }}.tar.gz
   sha256: f410138514f355c8c9de4f1f8c9534495c5418e9ea1041e8eff03a84b507b60b
 
 build:
@@ -30,15 +30,15 @@ requirements:
 
 test:
   imports:
-    - luxwidget
-    - luxwidget.nbextension
+    - solaswidget
+    - solaswidget.nbextension
   commands:
     - pip check
   requires:
     - pip
 
 about:
-  home: https://github.com/willeppy/lux-widget
+  home: https://github.com/willeppy/solas-widget
   summary: Jupyter Widget for Intelligent Data Discovery
   license: Apache-2.0
   license_file: LICENSE

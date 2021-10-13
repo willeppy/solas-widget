@@ -71,7 +71,7 @@ class ButtonsBroker extends Component<ButtonProps> {
         variant="info"
         onClose={() => this.props.closeExportInfo()}
         dismissible>
-        Access exported visualizations via the property `exported` (<a href="https://lux-api.readthedocs.io/en/latest/source/guide/export.html" target="_blank">More details</a>)
+        Access exported visualizations via the property `exported` (<a href="https://solas-api.readthedocs.io/en/latest/source/guide/export.html" target="_blank">More details</a>)
       </Alert>
     }
 

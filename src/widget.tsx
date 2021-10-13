@@ -1,4 +1,4 @@
-//  Copyright 2019-2020 The Lux Authors.
+//  Copyright 2019-2020 The Solas Authors.
 // 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -36,16 +36,16 @@ import HistoryEditor from "./historyEditor";
 import BottomMessage from './bottomMessages';
 
 
-export class LuxModel extends DOMWidgetModel {
+export class SolasModel extends DOMWidgetModel {
   defaults() {
     return {
       ...super.defaults(),
-      _model_name: LuxModel.model_name,
-      _model_module: LuxModel.model_module,
-      _model_module_version: LuxModel.model_module_version,
-      _view_name: LuxModel.view_name,
-      _view_module: LuxModel.view_module,
-      _view_module_version: LuxModel.model_module_version
+      _model_name: SolasModel.model_name,
+      _model_module: SolasModel.model_module,
+      _model_module_version: SolasModel.model_module_version,
+      _view_name: SolasModel.view_name,
+      _view_module: SolasModel.view_module,
+      _view_module_version: SolasModel.model_module_version
     };
   }
 
@@ -54,14 +54,14 @@ export class LuxModel extends DOMWidgetModel {
     // Add any extra serializers here
   }
 
-  static model_name = 'LuxModel';
+  static model_name = 'SolasModel';
   static model_module = MODULE_NAME;
   static model_module_version = MODULE_VERSION;
-  static view_name = 'LuxWidgetView';   // Set to null if no view
+  static view_name = 'SolasWidgetView';   // Set to null if no view
   static view_module = MODULE_NAME;   // Set to null if no view
   static view_module_version = MODULE_VERSION;
 }
-export class LuxWidgetView extends DOMWidgetView {
+export class SolasWidgetView extends DOMWidgetView {
   initialize() {
     let view = this;
     interface WidgetProps {
@@ -88,7 +88,7 @@ export class LuxWidgetView extends DOMWidgetView {
       selectedHistoryIdx: number
     }
 
-    class ReactWidget extends React.Component<LuxWidgetView, WidgetProps> {
+    class ReactWidget extends React.Component<SolasWidgetView, WidgetProps> {
       private chartComponents = Array<any>();
 
       constructor(props: any) {

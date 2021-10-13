@@ -1,4 +1,4 @@
-//  Copyright 2019-2020 The Lux Authors.
+//  Copyright 2019-2020 The Solas Authors.
 // 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -30,19 +30,19 @@ import {
   MODULE_NAME, MODULE_VERSION
 } from './version';
 
-const EXTENSION_ID = 'luxwidget:plugin';
+const EXTENSION_ID = 'solaswidget:plugin';
 
 /**
- * The Lux plugin.
+ * The Solas plugin.
  */
-const luxPlugin: IPlugin<Application<Widget>, void> = ({
+const solasPlugin: IPlugin<Application<Widget>, void> = ({
   id: EXTENSION_ID,
   requires: [IJupyterWidgetRegistry],
   activate: activateWidgetExtension,
   autoStart: true
 } as unknown) as IPlugin<Application<Widget>, void>;
 
-export default luxPlugin;
+export default solasPlugin;
 
 
 /**

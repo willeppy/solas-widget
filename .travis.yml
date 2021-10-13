@@ -6,6 +6,6 @@ node_js:
 install:
   - node -v
   - pip install -r requirements.txt
-  - pip install git+https://github.com/willeppy/lux-widget
+  - pip install git+https://github.com/willeppy/solas-widget
 script:
   - echo "successful build" 

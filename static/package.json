@@ -1,5 +1,5 @@
 {
-  "name": "luxwidget",
+  "name": "solaswidget",
   "version": "0.1.5",
   "description": "A Custom Jupyter Widget Library",
   "keywords": [
@@ -11,8 +11,8 @@
   "files": [
     "webpack.config.js",
     "tsconfig.json",
-    "luxwidget/*.py",
-    "luxwidget/nbextension/static/*",
+    "solaswidget/*.py",
+    "solaswidget/nbextension/static/*",
     "*.py",
     "src/*.tsx",
     "src/*.ts",
@@ -21,9 +21,9 @@
     "dist/*.js",
     "css/*.css"
   ],
-  "homepage": "https://github.com/willeppy/lux-widget",
+  "homepage": "https://github.com/willeppy/solas-widget",
   "bugs": {
-    "url": "https://github.com/willeppy/lux-widget/issues"
+    "url": "https://github.com/willeppy/solas-widget/issues"
   },
   "license": "Apache-2.0",
   "author": {
@@ -34,19 +34,19 @@
   "types": "./lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/willeppy/lux-widget"
+    "url": "https://github.com/willeppy/solas-widget"
   },
   "scripts": {
-    "postinstall": "pip install . && jupyter nbextension install --sys-prefix --symlink --overwrite --py luxwidget && jupyter nbextension enable --sys-prefix --py luxwidget",
+    "postinstall": "pip install . && jupyter nbextension install --sys-prefix --symlink --overwrite --py solaswidget && jupyter nbextension enable --sys-prefix --py solaswidget",
     "build": "npm install; npm run build:lib && npm run build:nbextension",
-    "build:labextension": "npm run clean:labextension && mkdirp luxwidget/labextension && cd luxwidget/labextension && npm pack ../..",
+    "build:labextension": "npm run clean:labextension && mkdirp solaswidget/labextension && cd solaswidget/labextension && npm pack ../..",
     "build:lib": "tsc",
     "build:nbextension": "webpack -p",
     "build:all": "npm run build:labextension && npm run build:nbextension",
     "clean": "npm run clean:lib && npm run clean:nbextension",
     "clean:lib": "rimraf lib",
-    "clean:labextension": "rimraf luxwidget/labextension",
-    "clean:nbextension": "rimraf luxwidget/nbextension/static/index.js",
+    "clean:labextension": "rimraf solaswidget/labextension",
+    "clean:nbextension": "rimraf solaswidget/nbextension/static/index.js",
     "prepack": "npm run build:lib",
     "watch": "npm-run-all -p watch:*",
     "watch:lib": "tsc -w",

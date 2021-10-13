@@ -25,7 +25,7 @@ module.exports = [
     entry: './src/extension.ts',
     output: {
       filename: 'index.js',
-      path: path.resolve(__dirname, 'luxwidget', 'nbextension', 'static'),
+      path: path.resolve(__dirname, 'solaswidget', 'nbextension', 'static'),
       libraryTarget: 'amd'
     },
     module: {
@@ -37,7 +37,7 @@ module.exports = [
   },
 
   /**
-   * Embeddable luxwidget bundle
+   * Embeddable solaswidget bundle
    *
    * This bundle is almost identical to the notebook extension bundle. The only
    * difference is in the configuration of the webpack public path for the
@@ -52,7 +52,7 @@ module.exports = [
         filename: 'index.js',
         path: path.resolve(__dirname, 'dist'),
         libraryTarget: 'amd',
-        library: "luxwidget"
+        library: "solaswidget"
     },
     devtool: 'source-map',
     module: {
@@ -73,7 +73,7 @@ module.exports = [
     output: {
       filename: 'embed-bundle.js',
       path: path.resolve(__dirname, 'docs', 'source', '_static'),
-      library: "luxwidget",
+      library: "solaswidget",
       libraryTarget: 'amd'
     },
     module: {
