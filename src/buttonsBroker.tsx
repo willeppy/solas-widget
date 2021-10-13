@@ -30,34 +30,34 @@ class ButtonsBroker extends Component<ButtonProps> {
     if (this.props.tabItems.length > 0) {
 
       if (this.props.buttonsEnabled) {
-        deleteBtn = <i id="deleteBtn"
+        deleteBtn = <i id="deleteBtn_"
           className="fa fa-trash sideButton"
           title='Delete selected visualizations'
           onClick={() => this.props.deleteSelection()} />
 
-        exportBtn = <i id="exportBtn"
+        exportBtn = <i id="exportBtn_"
           className='fa fa-upload sideButton'
           title='Export selected visualizations into variable'
           onClick={(e) => this.props.exportSelection()} />
 
         if (this.props.intentEnabled) {
-          intentBtn = <i id="intentBtn"
+          intentBtn = <i id="intentBtn_"
             className="fa fa-search sideButton"
             title='Set selected visualization as intent'
             onClick={() => this.props.setIntent()} />
         } else {
-          intentBtn = <i id="intentBtn"
+          intentBtn = <i id="intentBtn_"
             className="fa fa-search sideButton"
             style={{ opacity: 0.2, cursor: 'not-allowed' }}
             title='Select no more than one visualization to set as intent' />
         }
 
       } else {
-        deleteBtn = <i id="deleteBtn"
+        deleteBtn = <i id="deleteBtn_"
           className="fa fa-trash sideButton"
           style={{ opacity: 0.2, cursor: 'not-allowed' }}
           title='Select one or more visualizations to delete' />
-        exportBtn = <i id="exportBtn"
+        exportBtn = <i id="exportBtn_"
           className='fa fa-upload sideButton'
           style={{ opacity: 0.2, cursor: 'not-allowed' }}
           title='Select one or more visualizations to export into variable' />
@@ -75,16 +75,16 @@ class ButtonsBroker extends Component<ButtonProps> {
       </Alert>
     }
 
-    let historyBtn = <i id="editHistoryBtn"
+    let historyBtn = <i id="editHistoryBtn_"
       className='fa fa-edit sideButton'
       title="Edit history"
       onClick={() => this.props.historyClick()} />
 
-    let infoBtn = <i id="infoBtn"
+    let infoBtn = <i id="infoBtn_"
       className='fa fa-info-circle sideButton'
       onClick={() => this.props.infoClick()} />
 
-    let warningBtn = <i id="warnBtn"
+    let warningBtn = <i id="warnBtn_"
       className='fa fa-exclamation-triangle sideButton'
       onClick={() => this.props.warningClick()} />
 
