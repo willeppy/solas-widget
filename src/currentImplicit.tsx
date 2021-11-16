@@ -92,22 +92,14 @@ class CurrentImplicitComponent extends Component<currentVisProps, any> {
             };
             const CustomTooltip = withStyles(styles)(Tooltip);
 
-            const mainStyles = {
-                maxWidth: "50%",
-                minWidth: "26%", // so that it fits the title
-                borderRight: "0"
-            }
-
             let mStyle = {}
             let wrapperSpacingStyle = { marginTop: "25px" }
 
             if (this.props.numRecommendations !== 0) {
-                mStyle = mainStyles;
-            } else {
                 mStyle = {
-                    width: "100%"
+                    borderBottom: "0"
                 }
-            }
+            } 
 
             var vspec = this.props.recs[0].vspec
             for (var i = 0; i < vspec.length; i++) {

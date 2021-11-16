@@ -454,30 +454,31 @@ export class SolasWidgetView extends DOMWidgetView {
           return (
             <div id="widgetContainer" style={{ flexDirection: 'column' }}>
               <div style={{ display: 'flex', flexDirection: 'row' }}>
-
-                {_.isEmpty(this.state.intent) ?
+                <div style={{ display: 'flex', flexDirection: 'column', overflow: "hidden", width: "100%"}}>
                   <CurrentImplicitComponent
                     recs={this.state.implicitVisList}
                     op_name={op_name}
                     numRecommendations={this.state.recommendations.length}
                     onChange={this.handleCurrentVisSelect} />
-                  :
-                  <CurrentVisComponent
-                    intent={this.state.intent}
-                    currentVisSpec={this.state.currentVis}
-                    numRecommendations={this.state.recommendations.length}
-                    onChange={this.handleCurrentVisSelect} />
-                }
 
-                <div id="tabBanner">
-                  <Tabs
-                    activeKey={this.state.activeTab}
-                    id="tabBannerList"
-                    onSelect={this.handleSelect}
-                  // className={(!_.isEmpty(this.state.currentVis) || (this.state.implicitVisList.length > 0)) ? "tabBannerPadding" : ""}
-                  >
-                    {this.state.tabItems}
-                  </Tabs>
+                  <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    <CurrentVisComponent
+                      intent={this.state.intent}
+                      currentVisSpec={this.state.currentVis}
+                      numRecommendations={this.state.recommendations.length}
+                      onChange={this.handleCurrentVisSelect} />
+
+                    <div id="tabBanner">
+                      <Tabs
+                        activeKey={this.state.activeTab}
+                        id="tabBannerList"
+                        onSelect={this.handleSelect}
+                      // className={(!_.isEmpty(this.state.currentVis) || (this.state.implicitVisList.length > 0)) ? "tabBannerPadding" : ""}
+                      >
+                        {this.state.tabItems}
+                      </Tabs>
+                    </div>
+                  </div>
                 </div>
 
                 <ButtonsBroker
@@ -493,8 +494,8 @@ export class SolasWidgetView extends DOMWidgetView {
                   infoClick={this.toggleInfoPanel}
                   warningClick={this.toggleWarningPanel}
                 />
-
               </div>
+              
               {history_UI}
               <BottomMessage
                 infoMessage={this.state.longDescription} openInfo={this.state.openInfo} warningMessage={this.state.message} openWarning={this.state.openWarning} />

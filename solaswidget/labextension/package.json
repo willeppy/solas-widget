@@ -110,7 +110,7 @@
     "extension": "lib/plugin",
     "outputDir": "solaswidget/labextension",
     "_build": {
-      "load": "static/remoteEntry.0aea318e88f590026777.js",
+      "load": "static/remoteEntry.f6df5e0cd3691f89585f.js",
       "extension": "./extension",
       "style": "./style"
     }
